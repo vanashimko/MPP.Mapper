@@ -83,9 +83,20 @@ namespace Mapper
             return result;
         }
 
-        private PropertyInfo GetPropertyInfo<TSource, TPropertyType>(Expression<Func<TSource, TPropertyType>> propertyAccessor)
+        private PropertyInfo GetPropertyInfo<TSource, TPropertyType>(Expression<Func<TSource, TPropertyType>> configurationFunction)
         {
-            MemberExpression propertyAccessExpression = propertyAccessor.Body as MemberExpression;
+            Expression configurationExpression = configurationFunction.Body;
+
+            MemberExpression propertyAccessExpression;
+            if ((configurationExpression is UnaryExpression) && (configurationExpression.NodeType == ExpressionType.Convert))
+            {
+                propertyAccessExpression = (configurationExpression as UnaryExpression).Operand as MemberExpression;              
+            }
+            else
+            {
+                propertyAccessExpression = configurationExpression as MemberExpression;
+            }
+            
             if (propertyAccessExpression == null)
             {
                 throw new ArgumentException("Expression doesn't represent property accessor.");
