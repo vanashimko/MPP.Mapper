@@ -7,6 +7,7 @@
         public double CantConvert { get; set; }
         public FooSubclass SubclassAndClass { get; set; }
         public string Name { get; set; }
+        public int OneNumberCanConvert { get; set; }
         public string CantAssign { get; set; }
     }
 }

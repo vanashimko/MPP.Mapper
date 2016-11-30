@@ -10,13 +10,14 @@ namespace Mapper.Tests
         public float CantConvert { get; set; }
         public Foo SubclassAndClass { get; set; }
         public string FirstName { get; set; }
-        public object CantAssign { get; } = new object();
+        public long AnotherNumberCanConvert { get; set; }
+        public object CantAssign { get; } = null;
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj is Destination && Equals((Destination) obj);
+            return obj is Destination && Equals((Destination)obj);
         }
 
         public override int GetHashCode()
@@ -24,10 +25,12 @@ namespace Mapper.Tests
             unchecked
             {
                 var hashCode = CanConvert.GetHashCode();
-                hashCode = (hashCode*397) ^ (SameType != null ? SameType.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ CantConvert.GetHashCode();
-                hashCode = (hashCode*397) ^ (SubclassAndClass != null ? SubclassAndClass.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (FirstName != null ? FirstName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SameType != null ? SameType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ CantConvert.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SubclassAndClass != null ? SubclassAndClass.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FirstName != null ? FirstName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ AnotherNumberCanConvert.GetHashCode();
+                hashCode = (hashCode * 397) ^ (CantAssign != null ? CantAssign.GetHashCode() : 0);
                 return hashCode;
             }
         }
@@ -36,7 +39,7 @@ namespace Mapper.Tests
 
         private bool Equals(Destination other)
         {
-            return CanConvert == other.CanConvert && string.Equals(SameType, other.SameType) && CantConvert.Equals(other.CantConvert) && Equals(SubclassAndClass, other.SubclassAndClass) && string.Equals(FirstName, other.FirstName);
+            return CanConvert == other.CanConvert && string.Equals(SameType, other.SameType) && CantConvert.Equals(other.CantConvert) && Equals(SubclassAndClass, other.SubclassAndClass) && string.Equals(FirstName, other.FirstName) && AnotherNumberCanConvert == other.AnotherNumberCanConvert && Equals(CantAssign, other.CantAssign);
         }
     }
 }

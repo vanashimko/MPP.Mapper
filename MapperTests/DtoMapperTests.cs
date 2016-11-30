@@ -18,6 +18,7 @@ namespace Mapper.Tests
             SameType = "a",
             CantConvert = 3.14,
             SubclassAndClass = new FooSubclass(),
+            OneNumberCanConvert = 1,
             Name = "a"
         };
 
@@ -31,7 +32,8 @@ namespace Mapper.Tests
         {
             CanConvert = Source.CanConvert,
             SameType = Source.SameType,
-            FirstName = Source.Name
+            FirstName = Source.Name,
+            AnotherNumberCanConvert = 1
         };
 
         [Fact]
@@ -67,7 +69,8 @@ namespace Mapper.Tests
         public void Map_MappingUsingConfiguration()
         {
             MapperConfiguration mapperConfiguration = new MapperConfiguration();
-            mapperConfiguration.Register<Source, Destination, string>(source => source.Name, destination => destination.FirstName);
+            mapperConfiguration.Register<Source, Destination, string>(source => source.Name, destination => destination.FirstName)
+                .Register<Source, Destination, long>(source => source.OneNumberCanConvert, destination => destination.AnotherNumberCanConvert);
             IMapper mapper = new DtoMapper(mapperConfiguration);
 
             Destination actual = mapper.Map<Source, Destination>(Source);
